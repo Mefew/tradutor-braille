@@ -15,7 +15,7 @@ public class Settings {
     private static final boolean DEFAULT_DEBUG_MODE = true, DEFAULT_RS485_MODE = false;
     private static int lineSize = DEFAULT_LINE_SIZE, baudRate = DEFAULT_BAUD_RATE, parity = DEFAULT_PARITY, stopBits = DEFAULT_STOP_BITS;
     private static boolean debugMode = DEFAULT_DEBUG_MODE, RS485_Mode = DEFAULT_RS485_MODE;
-    private static String portDescriptor;
+    private static String portDescriptor = "";
 
     public static int getLineSize () {
         return lineSize;
@@ -35,12 +35,12 @@ public class Settings {
 
             if (properties.getProperty("NumeroDeCelulasBraille") != null && !properties.getProperty("NumeroDeCelulasBraille").isBlank())
                 lineSize = Integer.parseInt(properties.getProperty("NumeroDeCelulasBraille").trim());
-            if (lineSize > 255) {
-                System.out.println("Line sizes of more than 255 characters are not supported by this implementation currently. Instead using the default value of " + DEFAULT_LINE_SIZE + ".");
+            if (lineSize > 254) {
+                System.out.println("Line sizes of more than 254 characters are not supported by this implementation currently. Instead using the default value of " + DEFAULT_LINE_SIZE + ".");
                 lineSize = DEFAULT_LINE_SIZE;
             }
             else if (lineSize <= 0) {
-                System.out.println("Line sizes must be between 1 and 255. Please edit the configuration file. Execution will continue using the default value of " + DEFAULT_LINE_SIZE + ".");
+                System.out.println("Line sizes must be between 1 and 254. Please edit the configuration file. Execution will continue using the default value of " + DEFAULT_LINE_SIZE + ".");
                 lineSize = DEFAULT_LINE_SIZE;
             }
 

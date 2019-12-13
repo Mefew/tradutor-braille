@@ -35,16 +35,22 @@ public class Usb {
 
             inStream = serialPort.getInputStream();
             outStream = serialPort.getOutputStream();
-            outStream.write(HELLO);
+            if (inStream == null || outStream == null) {
+                System.out.println("Could not open port for communications. Please try again");
+                System.exit(0);
+            }
 
             while (!isConnected) {
                 if (waitForOrder(8000) == HELLO) {
+                    System.out.println("recebemos HELLO");
                     isConnected = true;
+                    outStream.write(HELLO);
                     sendSettings();
                 } else {
                     outStream.write(HELLO);
                 }
             }
+            System.out.println("entrou no loop principal");
             while (true) {
                 processOrder(waitForOrder(0), ebook);
             }
@@ -99,13 +105,13 @@ public class Usb {
         try {
             outStream.write(SENDING_SETTINGS);
 
-            for (int order, i = 0; i < 6; i++) {
+            for (int i = 0; i < 2; i++) {
                 if (waitForOrder(8000) == RECEIVED) {
                     switch (i) {
                         case 0:
                             outStream.write(Settings.getLineSize());
                             break;
-                        case 1:
+                        /*case 1:
                             outStream.write(Settings.getBaudRate());
                             break;
                         case 2:
@@ -116,7 +122,7 @@ public class Usb {
                             break;
                         case 4:
                             outStream.write(Settings.isRS485_Mode() ? 1 : 0);
-                            break;
+                            break;*/
                     }
                 }
                 else {
